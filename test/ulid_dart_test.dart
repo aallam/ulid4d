@@ -1,16 +1,39 @@
 import 'package:test/test.dart';
 import 'package:ulid_dart/src/time.dart';
+import 'package:ulid_dart/src/ulid_factory.dart';
 import 'package:ulid_dart/ulid_dart.dart';
+
+import 'utils.dart';
 
 void main() {
   test('invalid timestamp', () {
     expect(() => requireTimestamp(0x0001000000000000),
         throwsA(TypeMatcher<ArgumentError>()));
   });
-  
+
   test('random ULID', () {
-    var timestamp = DateTime.now().millisecondsSinceEpoch;
-    var randomULID = ULID.randomULID(timestamp);
-    print(randomULID);
+    final ulid = ULID.randomULID();
+    expect(ulid.length, 26);
+    final timePart = timePartOf(ulid);
+    final randomPart = randomPartOf(ulid);
+    expect(pastTimestampPart < timePart, true);
+    expect(maxTimestampPart >= timePart, true);
+    expect(minRandomPart <= randomPart, true);
+    expect(maxRandomPart >= randomPart, true);
+  });
+
+  test('random ULID with random 0', () {
+    final random = MockRandom();
+    final factory = ULIDFactory(random);
+    final ulid = factory.randomULID();
+
+    expect(random.nextInt(100), 0);
+    expect(ulid.length, 26);
+
+    final timePart = timePartOf(ulid);
+    final randomPart = randomPartOf(ulid);
+    expect(pastTimestampPart < timePart, true);
+    expect(maxTimestampPart >= timePart, true);
+    expect(randomPart, minRandomPart);
   });
 }
