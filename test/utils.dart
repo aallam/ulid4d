@@ -22,7 +22,10 @@ extension StringOperator on String {
 }
 
 class MockRandom implements Random {
-  MockRandom([this.boolean = true, this.number = 0]);
+  MockRandom([
+    this.number = 0,
+    this.boolean = true,
+  ]);
 
   final bool boolean;
   final num number;

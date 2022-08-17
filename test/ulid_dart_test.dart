@@ -36,4 +36,19 @@ void main() {
     expect(maxTimestampPart >= timePart, true);
     expect(randomPart, minRandomPart);
   });
+
+  test('random ULID with random -1', () {
+    final random = MockRandom(-1);
+    final factory = ULIDFactory(random);
+    final ulid = factory.randomULID();
+
+    expect(random.nextInt(100), -1);
+    expect(ulid.length, 26);
+
+    final timePart = timePartOf(ulid);
+    final randomPart = randomPartOf(ulid);
+    expect(pastTimestampPart < timePart, true);
+    expect(maxTimestampPart >= timePart, true);
+    expect(randomPart, maxRandomPart);
+  });
 }
