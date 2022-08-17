@@ -1,9 +1,7 @@
 import 'dart:math';
 
 const pastTimestampPart = '01B3F2133F';
-
 const maxTimestampPart = '7ZZZZZZZZZ';
-
 const maxRandomPart = 'ZZZZZZZZZZZZZZZZ';
 const minRandomPart = '0000000000000000';
 

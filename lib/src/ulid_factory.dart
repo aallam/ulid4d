@@ -6,6 +6,7 @@ import 'crockford.dart';
 import 'time.dart';
 import 'ulid.dart';
 
+/// ULID factory builder.
 class ULIDFactory {
   const ULIDFactory._(this.random);
 
