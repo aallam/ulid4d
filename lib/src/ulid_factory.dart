@@ -1,8 +1,10 @@
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'constants.dart';
 import 'crockford.dart';
 import 'time.dart';
+import 'ulid.dart';
 
 class ULIDFactory {
   const ULIDFactory._(this.random);
@@ -11,14 +13,26 @@ class ULIDFactory {
 
   final Random random;
 
+  /// Generate a ULID String.
   String randomULID([int? timestamp]) {
-    final time = timestamp ?? currentTimestamp();
-    requireTimestamp(time);
+    timestamp = timestamp ?? currentTimestamp();
+    requireTimestamp(timestamp);
     final buffer = Uint8List(26);
-    const max8bit = 4294967295;
-    buffer.write(time, 10, 0);
-    buffer.write(random.nextInt(max8bit), 8, 10);
-    buffer.write(random.nextInt(max8bit), 8, 18);
+    buffer.write(timestamp, 10, 0);
+    buffer.write(random.nextInt(max32bit), 8, 10);
+    buffer.write(random.nextInt(max32bit), 8, 18);
     return String.fromCharCodes(buffer);
+  }
+
+  /// Generate a [ULID].
+  ULID nextULID([int? timestamp]) {
+    timestamp = timestamp ?? currentTimestamp();
+    requireTimestamp(timestamp);
+    var mostSignificantBits = random.nextInt(max32bit);
+    final leastSignificantBits = random.nextInt(max32bit);
+    mostSignificantBits = mostSignificantBits & mask16Bits; // random 16 bits
+    mostSignificantBits = mostSignificantBits |
+        (timestamp << 16); // timestamp (32+16) + 16 random
+    return ULID(mostSignificantBits, leastSignificantBits);
   }
 }

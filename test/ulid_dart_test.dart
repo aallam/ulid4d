@@ -51,4 +51,16 @@ void main() {
     expect(maxTimestampPart >= timePart, true);
     expect(randomPart, maxRandomPart);
   });
+
+  test('next ULID', () {
+    final ulid = ULID.nextULID().toString();
+
+    expect(ulid.length, 26);
+    final timePart = timePartOf(ulid);
+    final randomPart = randomPartOf(ulid);
+    expect(pastTimestampPart < timePart, true);
+    expect(maxTimestampPart >= timePart, true);
+    expect(minRandomPart <= randomPart, true);
+    expect(maxRandomPart >= randomPart, true);
+  });
 }

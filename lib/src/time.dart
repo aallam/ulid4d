@@ -8,4 +8,5 @@ void requireTimestamp(int timestamp) {
   }
 }
 
+/// Get current datetime in milliseconds.
 int currentTimestamp() => DateTime.now().millisecondsSinceEpoch;
