@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:collection/collection.dart';
 import 'package:test/test.dart';
-import 'package:ulid_dart/src/ulid.dart';
+import 'package:ulid4d/src/ulid.dart';
 
 import 'utils.dart';
 
