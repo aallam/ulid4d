@@ -1,4 +1,4 @@
-# ULID for Dart
+# ULID for Dart _(ulid4d)_
 
 > Universally Unique Lexicographically Sortable Identifier
 
@@ -29,20 +29,20 @@ Instead, herein is proposed ULID:
 
 ## Usage
 
-* Generating _ULID_ String:
+* Generate _ULID_ String:
 
 ```dart
 var ulid = ULID.randomULID();
 ```
 
-* Generating `ULID` instance:
+* Generate `ULID` instance:
 
 ```dart
 var ulid = ULID.nextULID();
 var ulidString = ulid.toString();
 ```
 
-* Generating `ULID` using `ULIDFactory`
+* Generate `ULID` using `ULIDFactory`
 
 ```dart
 var factory = ULIDFactory();
@@ -50,12 +50,11 @@ var ulid = factory.nextULID();
 var ulidString = ulid.toString();
 ```
 
-You can use `ULIDFactory(Random)` to use a different `Random` instance.
+_You can use `ULIDFactory(Random)` to use a different `Random` instance._
+
+* Generating `ULID` from/to bytes
 
 ```dart
-// generate a ULID String
-var ulidString = ULID.randomULID();
-
 // generate a ULID instance
 var ulid = ULID.nextULID();
 
@@ -64,25 +63,20 @@ var data = ulid.toBytes();
 
 // generate a ULID from given byte array using 'fromBytes'
 var ulidFromBytes = ULID.fromBytes(data);
+```
+
+* Generate `ULID` from/to _ULID_ string
+
+````dart
+// generate a ULID string
+var ulidString = ULID.randomULID();
 
 // generate a ULID from given String using 'fromString'
 var ulidFromString = ULID.fromString(ulidString);
 
 // generate a ULID String from ULID instance
 var ulidStringFromULID = ulid.toString();
-```
-
-### Monotonicity
-
-[Specification](https://github.com/ulid/spec#monotonicity)
-
-```kotlin
-// generate ULID instance using a monotonic factory
-val ulid: ULID = ULID.Monotonic.nextULID(previousULID)
-
-// using a monotonic factory, generate a ULID instance or null in case of overflow
-val ulidStrict: ULID? = ULID.Monotonic.nextULIDStrict(previousULID)
-```
+````
 
 ## Specification
 
@@ -142,8 +136,8 @@ order).
 
 ## Prior Art
 
-- [huxi/sulky](https://github.com/huxi/sulky)
+- [Aallam/ulid-kotlin](https://github.com/Aallam/ulid-kotlin)
 
 ## License
 
-ULID for Kotlin is an open-sourced software licensed under the [MIT license](LICENSE.md).
+ulid4d is an open-sourced software licensed under the [MIT license](LICENSE.md).
