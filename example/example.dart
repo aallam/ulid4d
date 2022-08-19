@@ -13,12 +13,15 @@ void main() {
 
   // generate a ULID from given byte array using 'fromBytes'
   final ulidFromBytes = ULID.fromBytes(data);
+  print(ulidFromBytes);
 
   // generate a ULID from given String using 'fromString'
   final ulidFromString = ULID.fromString(ulidString);
+  print(ulidFromString);
 
   // generate a ULID String from ULID instance
   final ulidStringFromULID = ulid.toString();
+  print(ulidStringFromULID);
 
   // generate ULID instance using a monotonic factory
   final ulidMono = ULID.nextMonotonicULID(ulid);
@@ -26,9 +29,11 @@ void main() {
   // using a monotonic factory, generate a ULID instance or null in case
   // of overflow
   final ulidStrict = ULID.nextMonotonicULIDStrict(ulidMono);
+  print(ulidStrict);
 
   // generate ULID using ULID monotonic factory
   final monotonic = ULIDMonotonic();
   final ulidFromMono = monotonic.nextULID(ulid);
-  final ulidFromMonoStrict = monotonic.nextULIDStrict(ulid);
+  final ulidFromMonoStrict = monotonic.nextULIDStrict(ulidFromMono);
+  print(ulidFromMonoStrict);
 }
