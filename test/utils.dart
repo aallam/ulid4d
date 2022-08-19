@@ -4,6 +4,9 @@ const pastTimestampPart = '01B3F2133F';
 const maxTimestampPart = '7ZZZZZZZZZ';
 const maxRandomPart = 'ZZZZZZZZZZZZZZZZ';
 const minRandomPart = '0000000000000000';
+const allBitsSet = 0xFFFFFFFFFFFFFFFF;
+const leftMostBits = 0x0011223344556677;
+const rightMostBits = 0x8899AABBCCDDEEFF;
 
 String timePartOf(String ulid) => ulid.substring(0, 10);
 

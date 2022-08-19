@@ -53,4 +53,16 @@ class ULID extends Comparable<ULID> {
     buffer.write(leastSignificantBits, 8, 18);
     return String.fromCharCodes(buffer);
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ULID &&
+          runtimeType == other.runtimeType &&
+          mostSignificantBits == other.mostSignificantBits &&
+          leastSignificantBits == other.leastSignificantBits;
+
+  @override
+  int get hashCode =>
+      mostSignificantBits.hashCode ^ leastSignificantBits.hashCode;
 }
