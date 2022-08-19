@@ -7,8 +7,10 @@ import 'utils.dart';
 
 void main() {
   test('invalid timestamp', () {
-    expect(() => requireTimestamp(0x0001000000000000),
-        throwsA(TypeMatcher<ArgumentError>()));
+    expect(
+      () => requireTimestamp(0x0001000000000000),
+      throwsArgumentError,
+    );
   });
 
   test('random ULID', () {
@@ -25,7 +27,7 @@ void main() {
   });
 
   test('random ULID with random 0', () {
-    final random = MockRandom(0);
+    final random = MockRandom();
     final factory = ULIDFactory(random);
     final ulid = factory.randomULID();
 
@@ -68,7 +70,7 @@ void main() {
   });
 
   test('next ULID with random 0', () {
-    final random = MockRandom(0);
+    final random = MockRandom();
     final factory = ULIDFactory(random);
     final ulid = factory.nextULID().toString();
 
@@ -100,38 +102,61 @@ void main() {
   group('Comparable ULID', () {
     testComparable(0, 0, 0, 0, 0);
     testComparable(allBitsSet, allBitsSet, allBitsSet, allBitsSet, 0);
-    testComparable(patternMostSignificantBits, patternLeastSignificantBits,
-        patternMostSignificantBits, patternLeastSignificantBits, 0);
+    testComparable(
+      patternMostSignificantBits,
+      patternLeastSignificantBits,
+      patternMostSignificantBits,
+      patternLeastSignificantBits,
+      0,
+    );
     testComparable(0, 1, 0, 0, 1);
     testComparable(1 << 16, 0, 0, 0, 1);
   });
 
   group('Parse valid ULID ', () {
-    testParseValidULID("${pastTimestampPart}0000000000000000", pastTimestamp);
-    testParseValidULID("${pastTimestampPart}ZZZZZZZZZZZZZZZZ", pastTimestamp);
-    testParseValidULID("${pastTimestampPart}123456789ABCDEFG", pastTimestamp);
-    testParseValidULID("${pastTimestampPart}1000000000000000", pastTimestamp);
-    testParseValidULID("${pastTimestampPart}1000000000000001", pastTimestamp);
-    testParseValidULID("${pastTimestampPart}0001000000000001", pastTimestamp);
-    testParseValidULID("${pastTimestampPart}0100000000000001", pastTimestamp);
-    testParseValidULID("${pastTimestampPart}0000000000000001", pastTimestamp);
-    testParseValidULID("${minTimestampPart}123456789ABCDEFG", minTimestamp);
-    testParseValidULID("${maxTimestampPart}123456789ABCDEFG", maxTimestamp);
+    testParseValidULID('${pastTimestampPart}0000000000000000', pastTimestamp);
+    testParseValidULID('${pastTimestampPart}ZZZZZZZZZZZZZZZZ', pastTimestamp);
+    testParseValidULID('${pastTimestampPart}123456789ABCDEFG', pastTimestamp);
+    testParseValidULID('${pastTimestampPart}1000000000000000', pastTimestamp);
+    testParseValidULID('${pastTimestampPart}1000000000000001', pastTimestamp);
+    testParseValidULID('${pastTimestampPart}0001000000000001', pastTimestamp);
+    testParseValidULID('${pastTimestampPart}0100000000000001', pastTimestamp);
+    testParseValidULID('${pastTimestampPart}0000000000000001', pastTimestamp);
+    testParseValidULID('${minTimestampPart}123456789ABCDEFG', minTimestamp);
+    testParseValidULID('${maxTimestampPart}123456789ABCDEFG', maxTimestamp);
   });
 
   group('Parse ULID with excluded chars', () {
-    testParseExcludedULID("${pastTimestampPart}0l00000000000000",
-        "${pastTimestampPart}0100000000000000", pastTimestamp);
-    testParseExcludedULID("${pastTimestampPart}0L00000000000000",
-        "${pastTimestampPart}0100000000000000", pastTimestamp);
-    testParseExcludedULID("${pastTimestampPart}0i00000000000000",
-        "${pastTimestampPart}0100000000000000", pastTimestamp);
-    testParseExcludedULID("${pastTimestampPart}0I00000000000000",
-        "${pastTimestampPart}0100000000000000", pastTimestamp);
-    testParseExcludedULID("${pastTimestampPart}0o00000000000000",
-        "${pastTimestampPart}0000000000000000", pastTimestamp);
-    testParseExcludedULID("${pastTimestampPart}0O00000000000000",
-        "${pastTimestampPart}0000000000000000", pastTimestamp);
+    testParseExcludedULID(
+      '${pastTimestampPart}0l00000000000000',
+      '${pastTimestampPart}0100000000000000',
+      pastTimestamp,
+    );
+    testParseExcludedULID(
+      '${pastTimestampPart}0L00000000000000',
+      '${pastTimestampPart}0100000000000000',
+      pastTimestamp,
+    );
+    testParseExcludedULID(
+      '${pastTimestampPart}0i00000000000000',
+      '${pastTimestampPart}0100000000000000',
+      pastTimestamp,
+    );
+    testParseExcludedULID(
+      '${pastTimestampPart}0I00000000000000',
+      '${pastTimestampPart}0100000000000000',
+      pastTimestamp,
+    );
+    testParseExcludedULID(
+      '${pastTimestampPart}0o00000000000000',
+      '${pastTimestampPart}0000000000000000',
+      pastTimestamp,
+    );
+    testParseExcludedULID(
+      '${pastTimestampPart}0O00000000000000',
+      '${pastTimestampPart}0000000000000000',
+      pastTimestamp,
+    );
   });
 
   group('Parse invalid ULID string', () {
@@ -142,8 +167,13 @@ void main() {
 }
 
 /// Test comparability of [ULID] objects.
-void testComparable(int mostSignificantBits1, int leastSignificantBits1,
-    int mostSignificantBits2, int leastSignificantBits2, int compare) {
+void testComparable(
+  int mostSignificantBits1,
+  int leastSignificantBits1,
+  int mostSignificantBits2,
+  int leastSignificantBits2,
+  int compare,
+) {
   final ulid1 = ULID(mostSignificantBits1, leastSignificantBits1);
   final ulid2 = ULID(mostSignificantBits2, leastSignificantBits2);
   test('Compare $ulid1 and $ulid2', () {

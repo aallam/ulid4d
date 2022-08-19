@@ -11,14 +11,20 @@ void main() {
     testToBytes(0, 0, zeroBytes);
     testToBytes(allBitsSet, allBitsSet, fullBytes);
     testToBytes(
-        patternMostSignificantBits, patternLeastSignificantBits, patternBytes);
+      patternMostSignificantBits,
+      patternLeastSignificantBits,
+      patternBytes,
+    );
   });
 
   group('ULID from byte array', () {
     testFromBytes(zeroBytes, 0, 0);
     testFromBytes(fullBytes, allBitsSet, allBitsSet);
     testFromBytes(
-        patternBytes, patternMostSignificantBits, patternLeastSignificantBits);
+      patternBytes,
+      patternMostSignificantBits,
+      patternLeastSignificantBits,
+    );
   });
 
   group('Invalid bytes', () {
@@ -36,11 +42,14 @@ void main() {
 
 /// Test convert [ULID] to byte array.
 void testToBytes(
-    int mostSignificantBits, int leastSignificantBits, Uint8List expectedData) {
+  int mostSignificantBits,
+  int leastSignificantBits,
+  Uint8List expectedData,
+) {
   final ulid = ULID(mostSignificantBits, leastSignificantBits);
   test('$ulid to bytes', () {
     final bytes = ulid.toBytes();
-    final bool equal = const ListEquality().equals(bytes, expectedData);
+    final equal = const ListEquality().equals(bytes, expectedData);
     expect(equal, true);
   });
 }

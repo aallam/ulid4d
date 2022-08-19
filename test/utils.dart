@@ -6,7 +6,7 @@ const pastTimestampPart = '01B3F2133F';
 const maxTimestamp = 0xFFFFFFFFFFFF;
 const maxTimestampPart = '7ZZZZZZZZZ';
 const minTimestamp = 0x0;
-const minTimestampPart = "0000000000";
+const minTimestampPart = '0000000000';
 const maxRandomPart = 'ZZZZZZZZZZZZZZZZ';
 const minRandomPart = '0000000000000000';
 const allBitsSet = 0xFFFFFFFFFFFFFFFF;
@@ -45,17 +45,11 @@ class MockRandom implements Random {
   final num number;
 
   @override
-  bool nextBool() {
-    return boolean;
-  }
+  bool nextBool() => boolean;
 
   @override
-  double nextDouble() {
-    return number.toDouble();
-  }
+  double nextDouble() => number.toDouble();
 
   @override
-  int nextInt(int max) {
-    return number.toInt();
-  }
+  int nextInt(int max) => number.toInt();
 }

@@ -7,9 +7,9 @@ import 'utils.dart';
 
 /// ULID factory builder.
 class ULIDFactory {
-  const ULIDFactory._(this.random);
-
   factory ULIDFactory([Random? random]) => ULIDFactory._(random ?? Random());
+
+  const ULIDFactory._(this.random);
 
   final Random random;
 
@@ -17,10 +17,10 @@ class ULIDFactory {
   String randomULID([int? timestamp]) {
     timestamp = timestamp ?? currentTimestamp();
     requireTimestamp(timestamp);
-    final buffer = Uint8List(26);
-    buffer.write(timestamp, 10, 0);
-    buffer.write(random.nextInt(max32bit), 8, 10);
-    buffer.write(random.nextInt(max32bit), 8, 18);
+    final buffer = Uint8List(26)
+      ..write(timestamp, 10, 0)
+      ..write(random.nextInt(max32bit), 8, 10)
+      ..write(random.nextInt(max32bit), 8, 18);
     return String.fromCharCodes(buffer);
   }
 
@@ -39,7 +39,7 @@ class ULIDFactory {
   /// Generate a [ULID] from given bytes.
   /// [data] must be 16 bytes in length.
   ULID fromBytes(Uint8List data) {
-    require(data.length == 16, "data must be 16 bytes in length");
+    require(data.length == 16, 'data must be 16 bytes in length');
     var mostSignificantBits = 0;
     var leastSignificantBits = 0;
     for (var i = 0; i < 8; i++) {
@@ -54,12 +54,14 @@ class ULIDFactory {
 
   /// Create [ULID] object from given (valid) ULID [string].
   ULID fromString(String string) {
-    require(string.length == 26, "ULID string must be exactly 26 chars long");
+    require(string.length == 26, 'ULID string must be exactly 26 chars long');
 
     final timeString = string.substring(0, 10);
     final time = timeString.parseCrockford();
-    require((time & timestampOverflowMask) == 0,
-        "ulid string must not exceed '7ZZZZZZZZZZZZZZZZZZZZZZZZZ'!");
+    require(
+      (time & timestampOverflowMask) == 0,
+      "ulid string must not exceed '7ZZZZZZZZZZZZZZZZZZZZZZZZZ'!",
+    );
 
     final part1 = string.substring(10, 18).parseCrockford();
     final part2 = string.substring(18).parseCrockford();

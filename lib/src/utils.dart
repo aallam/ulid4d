@@ -9,14 +9,16 @@ const max32bit = 4294967295; // (2^32) - 1
 
 /// Require valid timestamp.
 void requireTimestamp(int timestamp) {
-  require((timestamp & timestampOverflowMask) == 0,
-      "ULID does not support timestamps after +10889-08-02T05:31:50.655Z!");
+  require(
+    (timestamp & timestampOverflowMask) == 0,
+    'ULID does not support timestamps after +10889-08-02T05:31:50.655Z!',
+  );
 }
 
 /// Require valid [condition].
 void require(bool condition, [String? error]) {
   if (!condition) {
-    throw ArgumentError(error ?? "Failed requirement.");
+    throw ArgumentError(error ?? 'Failed requirement.');
   }
 }
 

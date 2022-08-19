@@ -17,7 +17,7 @@ extension CrockfordByte on Uint8List {
 extension CrockfordString on String {
   /// [Crockford's Base 32](https://www.crockford.com/base32.html).
   int parseCrockford() {
-    require(length <= 12, "input length must not exceed 12 but was $length!");
+    require(length <= 12, 'input length must not exceed 12 but was $length!');
     var result = 0;
     for (var i = 0; i < codeUnits.length; i++) {
       final current = codeUnits[i];
@@ -26,7 +26,9 @@ extension CrockfordString on String {
         value = decodingChars[current];
       }
       require(
-          value >= 0, "Illegal character '${String.fromCharCode(current)}'!");
+        value >= 0,
+        "Illegal character '${String.fromCharCode(current)}'!",
+      );
       final bitCount = (length - 1 - i) * mask5BitsCount;
       final shifted = value << bitCount;
       result = result | shifted;

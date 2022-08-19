@@ -49,27 +49,25 @@ class ULID extends Comparable<ULID> {
   }
 
   @override
-  int compareTo(ULID other) {
-    return mostSignificantBits < other.mostSignificantBits
-        ? -1
-        : mostSignificantBits > other.mostSignificantBits
-            ? 1
-            : leastSignificantBits < other.leastSignificantBits
-                ? -1
-                : leastSignificantBits > other.leastSignificantBits
-                    ? 1
-                    : 0;
-  }
+  int compareTo(ULID other) => mostSignificantBits < other.mostSignificantBits
+      ? -1
+      : mostSignificantBits > other.mostSignificantBits
+          ? 1
+          : leastSignificantBits < other.leastSignificantBits
+              ? -1
+              : leastSignificantBits > other.leastSignificantBits
+                  ? 1
+                  : 0;
 
   @override
   String toString() {
-    final buffer = Uint8List(26);
-    buffer.write(timestamp, 10, 0);
+    final buffer = Uint8List(26)..write(timestamp, 10, 0);
     var value = (mostSignificantBits & mask16Bits) << 24;
     final interim = leastSignificantBits >>> 40;
     value = value | interim;
-    buffer.write(value, 8, 10);
-    buffer.write(leastSignificantBits, 8, 18);
+    buffer
+      ..write(value, 8, 10)
+      ..write(leastSignificantBits, 8, 18);
     return String.fromCharCodes(buffer);
   }
 
