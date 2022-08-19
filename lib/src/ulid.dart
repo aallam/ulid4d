@@ -34,7 +34,7 @@ class ULID extends Comparable<ULID> {
   final int leastSignificantBits;
 
   /// Get timestamp.
-  int get timestamp => mostSignificantBits >> 16;
+  int get timestamp => mostSignificantBits >>> 16;
 
   /// Generate the [Uint8List] for this [ULID].
   Uint8List toBytes() {

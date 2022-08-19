@@ -1,8 +1,12 @@
 import 'dart:math';
 import 'dart:typed_data';
 
+const pastTimestamp = 1481195424879;
 const pastTimestampPart = '01B3F2133F';
+const maxTimestamp = 0xFFFFFFFFFFFF;
 const maxTimestampPart = '7ZZZZZZZZZ';
+const minTimestamp = 0x0;
+const minTimestampPart = "0000000000";
 const maxRandomPart = 'ZZZZZZZZZZZZZZZZ';
 const minRandomPart = '0000000000000000';
 const allBitsSet = 0xFFFFFFFFFFFFFFFF;

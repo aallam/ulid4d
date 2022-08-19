@@ -105,6 +105,40 @@ void main() {
     testComparable(0, 1, 0, 0, 1);
     testComparable(1 << 16, 0, 0, 0, 1);
   });
+
+  group('Parse valid ULID ', () {
+    testParseValidULID("${pastTimestampPart}0000000000000000", pastTimestamp);
+    testParseValidULID("${pastTimestampPart}ZZZZZZZZZZZZZZZZ", pastTimestamp);
+    testParseValidULID("${pastTimestampPart}123456789ABCDEFG", pastTimestamp);
+    testParseValidULID("${pastTimestampPart}1000000000000000", pastTimestamp);
+    testParseValidULID("${pastTimestampPart}1000000000000001", pastTimestamp);
+    testParseValidULID("${pastTimestampPart}0001000000000001", pastTimestamp);
+    testParseValidULID("${pastTimestampPart}0100000000000001", pastTimestamp);
+    testParseValidULID("${pastTimestampPart}0000000000000001", pastTimestamp);
+    testParseValidULID("${minTimestampPart}123456789ABCDEFG", minTimestamp);
+    testParseValidULID("${maxTimestampPart}123456789ABCDEFG", maxTimestamp);
+  });
+
+  group('Parse ULID with excluded chars', () {
+    testParseExcludedULID("${pastTimestampPart}0l00000000000000",
+        "${pastTimestampPart}0100000000000000", pastTimestamp);
+    testParseExcludedULID("${pastTimestampPart}0L00000000000000",
+        "${pastTimestampPart}0100000000000000", pastTimestamp);
+    testParseExcludedULID("${pastTimestampPart}0i00000000000000",
+        "${pastTimestampPart}0100000000000000", pastTimestamp);
+    testParseExcludedULID("${pastTimestampPart}0I00000000000000",
+        "${pastTimestampPart}0100000000000000", pastTimestamp);
+    testParseExcludedULID("${pastTimestampPart}0o00000000000000",
+        "${pastTimestampPart}0000000000000000", pastTimestamp);
+    testParseExcludedULID("${pastTimestampPart}0O00000000000000",
+        "${pastTimestampPart}0000000000000000", pastTimestamp);
+  });
+
+  group('Parse invalid ULID string', () {
+    testParseInvalidULID('0000000000000000000000000');
+    testParseInvalidULID('000000000000000000000000000');
+    testParseInvalidULID('80000000000000000000000000');
+  });
 }
 
 /// Test comparability of [ULID] objects.
@@ -129,5 +163,34 @@ void testComparable(int mostSignificantBits1, int leastSignificantBits1,
       expect(compare12, compare);
       expect(equals12, false);
     }
+  });
+}
+
+/// Test parse valid ULID string.
+void testParseValidULID(String string, int expectedTimestamp) {
+  test('Parse $string', () {
+    final ulid = ULID.fromString(string);
+    expect(ulid.toString(), string);
+    expect(ulid.timestamp, expectedTimestamp);
+  });
+}
+
+/// Test parse valid ULID string with excluded chars (I,L,O,U).
+void testParseExcludedULID(
+  String string,
+  String expectedString,
+  int expectedTimestamp,
+) {
+  test('Parse $string', () {
+    final ulid = ULID.fromString(string);
+    expect(ulid.toString(), expectedString);
+    expect(ulid.timestamp, expectedTimestamp);
+  });
+}
+
+/// Test parse invalid ULID.
+void testParseInvalidULID(String string) {
+  test('Parse $string', () {
+    expect(() => ULID.fromString(string), throwsArgumentError);
   });
 }

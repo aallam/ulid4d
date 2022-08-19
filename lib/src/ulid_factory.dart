@@ -64,7 +64,7 @@ class ULIDFactory {
     final part1 = string.substring(10, 18).parseCrockford();
     final part2 = string.substring(18).parseCrockford();
 
-    final most = (time << 16) & (part1 >>> 24);
+    final most = (time << 16) | (part1 >>> 24);
     final least = part2 | (part1 << 40);
     return ULID(most, least);
   }
