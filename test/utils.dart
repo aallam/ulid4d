@@ -6,8 +6,8 @@ const maxTimestampPart = '7ZZZZZZZZZ';
 const maxRandomPart = 'ZZZZZZZZZZZZZZZZ';
 const minRandomPart = '0000000000000000';
 const allBitsSet = 0xFFFFFFFFFFFFFFFF;
-const leftMostBits = 0x0011223344556677;
-const rightMostBits = 0x8899AABBCCDDEEFF;
+const patternMostSignificantBits = 0x0011223344556677;
+const patternLeastSignificantBits = 0x8899AABBCCDDEEFF;
 final zeroBytes = Uint8List(16);
 final fullBytes = Uint8List.fromList(List.filled(16, 0xFF));
 // @formatter:off

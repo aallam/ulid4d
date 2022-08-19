@@ -1,27 +1,113 @@
-import 'dart:typed_data';
-
-import 'package:collection/collection.dart';
 import 'package:test/test.dart';
+import 'package:ulid_dart/src/time.dart';
 import 'package:ulid_dart/src/ulid.dart';
+import 'package:ulid_dart/src/ulid_factory.dart';
 
 import 'utils.dart';
 
 void main() {
+  test('invalid timestamp', () {
+    expect(() => requireTimestamp(0x0001000000000000),
+        throwsA(TypeMatcher<ArgumentError>()));
+  });
+
+  test('random ULID', () {
+    final ulid = ULID.randomULID();
+
+    expect(ulid.length, 26);
+
+    final timePart = timePartOf(ulid);
+    final randomPart = randomPartOf(ulid);
+    expect(pastTimestampPart < timePart, true);
+    expect(maxTimestampPart >= timePart, true);
+    expect(minRandomPart <= randomPart, true);
+    expect(maxRandomPart >= randomPart, true);
+  });
+
+  test('random ULID with random 0', () {
+    final random = MockRandom(0);
+    final factory = ULIDFactory(random);
+    final ulid = factory.randomULID();
+
+    expect(random.nextInt(100), 0);
+    expect(ulid.length, 26);
+
+    final timePart = timePartOf(ulid);
+    final randomPart = randomPartOf(ulid);
+    expect(pastTimestampPart < timePart, true);
+    expect(maxTimestampPart >= timePart, true);
+    expect(randomPart, minRandomPart);
+  });
+
+  test('random ULID with random -1', () {
+    final random = MockRandom(-1);
+    final factory = ULIDFactory(random);
+    final ulid = factory.randomULID();
+
+    expect(random.nextInt(100), -1);
+    expect(ulid.length, 26);
+
+    final timePart = timePartOf(ulid);
+    final randomPart = randomPartOf(ulid);
+    expect(pastTimestampPart < timePart, true);
+    expect(maxTimestampPart >= timePart, true);
+    expect(randomPart, maxRandomPart);
+  });
+
+  test('next ULID', () {
+    final ulid = ULID.nextULID().toString();
+
+    expect(ulid.length, 26);
+
+    final timePart = timePartOf(ulid);
+    final randomPart = randomPartOf(ulid);
+    expect(pastTimestampPart < timePart, true);
+    expect(maxTimestampPart >= timePart, true);
+    expect(minRandomPart <= randomPart, true);
+    expect(maxRandomPart >= randomPart, true);
+  });
+
+  test('next ULID with random 0', () {
+    final random = MockRandom(0);
+    final factory = ULIDFactory(random);
+    final ulid = factory.nextULID().toString();
+
+    expect(random.nextInt(100), 0);
+    expect(ulid.length, 26);
+
+    final timePart = timePartOf(ulid);
+    final randomPart = randomPartOf(ulid);
+    expect(pastTimestampPart < timePart, true);
+    expect(maxTimestampPart >= timePart, true);
+    expect(randomPart, minRandomPart);
+  });
+
+  test('random ULID with random -1', () {
+    final random = MockRandom(-1);
+    final factory = ULIDFactory(random);
+    final ulid = factory.nextULID().toString();
+
+    expect(random.nextInt(100), -1);
+    expect(ulid.length, 26);
+
+    final timePart = timePartOf(ulid);
+    final randomPart = randomPartOf(ulid);
+    expect(pastTimestampPart < timePart, true);
+    expect(maxTimestampPart >= timePart, true);
+    expect(randomPart, maxRandomPart);
+  });
+
   group('Comparable ULID', () {
     testComparable(0, 0, 0, 0, 0);
     testComparable(allBitsSet, allBitsSet, allBitsSet, allBitsSet, 0);
-    testComparable(leftMostBits, rightMostBits, leftMostBits, rightMostBits, 0);
+    testComparable(patternMostSignificantBits, patternLeastSignificantBits,
+        patternMostSignificantBits, patternLeastSignificantBits, 0);
     testComparable(0, 1, 0, 0, 1);
     testComparable(1 << 16, 0, 0, 0, 1);
   });
-
-  group('ULID to bytes array', () {
-    testToBytes(0, 0, zeroBytes);
-    testToBytes(allBitsSet, allBitsSet, fullBytes);
-    testToBytes(leftMostBits, rightMostBits, patternBytes);
-  });
 }
 
+/// Test comparability of [ULID] objects.
 void testComparable(int mostSignificantBits1, int leastSignificantBits1,
     int mostSignificantBits2, int leastSignificantBits2, int compare) {
   final ulid1 = ULID(mostSignificantBits1, leastSignificantBits1);
@@ -43,15 +129,5 @@ void testComparable(int mostSignificantBits1, int leastSignificantBits1,
       expect(compare12, compare);
       expect(equals12, false);
     }
-  });
-}
-
-void testToBytes(
-    int mostSignificantBits, int leastSignificantBits, Uint8List expectedData) {
-  final ulid = ULID(mostSignificantBits, leastSignificantBits);
-  test('$ulid to bytes', () {
-    final bytes = ulid.toBytes();
-    final bool equal = const ListEquality().equals(bytes, expectedData);
-    expect(equal, true);
   });
 }

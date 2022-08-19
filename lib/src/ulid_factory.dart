@@ -36,4 +36,20 @@ class ULIDFactory {
         (timestamp << 16); // timestamp (32+16) + 16 random
     return ULID(mostSignificantBits, leastSignificantBits);
   }
+
+  /// Generate a [ULID] from given bytes.
+  /// [data] must be 16 bytes in length.
+  ULID fromBytes(Uint8List data) {
+    require(data.length == 16, "data must be 16 bytes in length");
+    var mostSignificantBits = 0;
+    var leastSignificantBits = 0;
+    for (var i = 0; i < 8; i++) {
+      mostSignificantBits = (mostSignificantBits << 8) | (data[i] & mask8Bits);
+    }
+    for (var i = 8; i < 16; i++) {
+      leastSignificantBits =
+          (leastSignificantBits << 8) | (data[i] & mask8Bits);
+    }
+    return ULID(mostSignificantBits, leastSignificantBits);
+  }
 }

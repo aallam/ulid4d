@@ -15,6 +15,10 @@ class ULID extends Comparable<ULID> {
   /// Generate a [ULID].
   factory ULID.nextULID([int? timestamp]) => _factory.nextULID(timestamp);
 
+  /// Generate a [ULID] from given bytes.
+  /// [data] must be 16 bytes in length.
+  factory ULID.fromBytes(Uint8List data) => _factory.fromBytes(data);
+
   /// Generate a ULID String.
   static String randomULID([int? timestamp]) => _factory.randomULID(timestamp);
 
