@@ -1,6 +1,6 @@
 name: ulid4d
 description: Universally Unique Lexicographically Sortable Identifier for Dart
-version: 1.0.0
+version: 1.1.0
 homepage: https://github.com/Aallam/ulid4d/tree/main
 
 environment:
