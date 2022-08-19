@@ -78,6 +78,28 @@ var ulidFromString = ULID.fromString(ulidString);
 var ulidStringFromULID = ulid.toString();
 ````
 
+### Monotonicity
+
+[Specification](https://github.com/ulid/spec#monotonicity)
+
+```dart
+// generate ULID instance using a monotonic factory
+var ulid = ULID.nextMonotonicULID(ulid);
+
+// using a monotonic factory, generate a ULID instance or null in case
+// of overflow
+var ulidStrict = ULID.nextMonotonicULIDStrict(ulidMono);
+```
+
+* Generate `ULID` using `ULIDMonocity`
+
+```dart
+// generate ULID using ULID monotonic factory
+var factory = ULIDMonotonic();
+var ulid = factory.nextULID(ulid);
+var ulidStrict = factory.nextULIDStrict(ulid);
+```
+
 ## Specification
 
 Below is the current specification of ULID as implemented in this repository.
