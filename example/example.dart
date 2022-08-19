@@ -1,4 +1,4 @@
-import 'package:ulid4d/ulid.dart';
+import 'package:ulid4d/ulid4d.dart';
 
 void main() {
   // generate a ULID String
