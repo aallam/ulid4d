@@ -2,9 +2,9 @@ import 'dart:typed_data';
 
 import 'package:meta/meta.dart';
 
-import 'constants.dart';
 import 'crockford.dart';
 import 'ulid_factory.dart';
+import 'utils.dart';
 
 /// Universally Unique Lexicographically Sortable Identifier.
 /// [Specification](https://github.com/ulid/spec#specification)
@@ -18,6 +18,9 @@ class ULID extends Comparable<ULID> {
   /// Generate a [ULID] from given bytes.
   /// [data] must be 16 bytes in length.
   factory ULID.fromBytes(Uint8List data) => _factory.fromBytes(data);
+
+  /// Create [ULID] object from given (valid) ULID [string].
+  factory ULID.fromString(String string) => _factory.fromString(string);
 
   /// Generate a ULID String.
   static String randomULID([int? timestamp]) => _factory.randomULID(timestamp);

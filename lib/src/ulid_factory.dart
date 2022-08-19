@@ -1,10 +1,9 @@
 import 'dart:math';
 import 'dart:typed_data';
 
-import 'constants.dart';
 import 'crockford.dart';
-import 'time.dart';
 import 'ulid.dart';
+import 'utils.dart';
 
 /// ULID factory builder.
 class ULIDFactory {
@@ -51,5 +50,22 @@ class ULIDFactory {
           (leastSignificantBits << 8) | (data[i] & mask8Bits);
     }
     return ULID(mostSignificantBits, leastSignificantBits);
+  }
+
+  /// Create [ULID] object from given (valid) ULID [string].
+  ULID fromString(String string) {
+    require(string.length == 26, "ULID string must be exactly 26 chars long");
+
+    final timeString = string.substring(0, 10);
+    final time = timeString.parseCrockford();
+    require((time & timestampOverflowMask) == 0,
+        "ulid string must not exceed '7ZZZZZZZZZZZZZZZZZZZZZZZZZ'!");
+
+    final part1 = string.substring(10, 18).parseCrockford();
+    final part2 = string.substring(18).parseCrockford();
+
+    final most = (time << 16) & (part1 >>> 24);
+    final least = part2 | (part1 << 40);
+    return ULID(most, least);
   }
 }

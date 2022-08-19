@@ -1,8 +1,9 @@
 import 'dart:typed_data';
 
-import 'constants.dart';
+import 'utils.dart';
 
-extension Crockford on Uint8List {
+extension CrockfordByte on Uint8List {
+  /// [Crockford's Base 32](https://www.crockford.com/base32.html).
   void write(int value, int count, int offset) {
     for (var i = 0; i < count; i++) {
       final bitCount = (count - i - 1) * 5; // 5 bits, needed to encode 32 value
@@ -10,6 +11,27 @@ extension Crockford on Uint8List {
       final index = shifted & mask5Bits;
       this[offset + i] = encodingChars[index];
     }
+  }
+}
+
+extension CrockfordString on String {
+  /// [Crockford's Base 32](https://www.crockford.com/base32.html).
+  int parseCrockford() {
+    require(length <= 12, "input length must not exceed 12 but was $length!");
+    var result = 0;
+    for (var i = 0; i < codeUnits.length; i++) {
+      final current = codeUnits[i];
+      var value = -1;
+      if (current < decodingChars.length) {
+        value = decodingChars[current];
+      }
+      require(
+          value >= 0, "Illegal character '${String.fromCharCode(current)}'!");
+      final bitCount = (length - 1 - i) * mask5BitsCount;
+      final shifted = value << bitCount;
+      result = result | shifted;
+    }
+    return result;
   }
 }
 

@@ -1,7 +1,7 @@
 import 'package:test/test.dart';
-import 'package:ulid_dart/src/time.dart';
 import 'package:ulid_dart/src/ulid.dart';
 import 'package:ulid_dart/src/ulid_factory.dart';
+import 'package:ulid_dart/src/utils.dart';
 
 import 'utils.dart';
 
