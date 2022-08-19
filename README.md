@@ -140,4 +140,4 @@ order).
 
 ## License
 
-ulid4d is an open-sourced software licensed under the [MIT license](LICENSE.md).
+ulid4d is an open-sourced software licensed under the [BSD 3-clause license](LICENSE).
