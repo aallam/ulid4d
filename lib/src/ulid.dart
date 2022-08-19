@@ -29,6 +29,18 @@ class ULID extends Comparable<ULID> {
   /// Get timestamp.
   int get timestamp => mostSignificantBits >> 16;
 
+  /// Generate the [Uint8List] for this [ULID].
+  Uint8List toBytes() {
+    final bytes = Uint8List(16);
+    for (var i = 0; i < 8; i++) {
+      bytes[i] = (mostSignificantBits >> ((7 - i) * 8)) & mask8Bits;
+    }
+    for (var i = 8; i < 16; i++) {
+      bytes[i] = (leastSignificantBits >> ((15 - i) * 8)) & mask8Bits;
+    }
+    return bytes;
+  }
+
   @override
   int compareTo(ULID other) {
     return mostSignificantBits < other.mostSignificantBits
