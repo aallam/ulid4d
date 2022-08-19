@@ -5,13 +5,16 @@ import 'crockford.dart';
 import 'ulid.dart';
 import 'utils.dart';
 
-/// ULID factory builder.
+/// [ULID] factory builder.
 class ULIDFactory {
+  /// Creates a [ULIDFactory] instance, with optional [random] generator.
   factory ULIDFactory([Random? random]) => ULIDFactory._(random ?? Random());
 
-  const ULIDFactory._(this.random);
+  /// Default [ULIDFactory] constructor.
+  const ULIDFactory._(this._random);
 
-  final Random random;
+  /// Internal random generator.
+  final Random _random;
 
   /// Generate a ULID String.
   String randomULID([int? timestamp]) {
@@ -19,8 +22,8 @@ class ULIDFactory {
     requireTimestamp(timestamp);
     final buffer = Uint8List(26)
       ..write(timestamp, 10, 0)
-      ..write(random.nextInt(max32bit), 8, 10)
-      ..write(random.nextInt(max32bit), 8, 18);
+      ..write(_random.nextInt(max32bit), 8, 10)
+      ..write(_random.nextInt(max32bit), 8, 18);
     return String.fromCharCodes(buffer);
   }
 
@@ -28,12 +31,12 @@ class ULIDFactory {
   ULID nextULID([int? timestamp]) {
     timestamp = timestamp ?? currentTimestamp();
     requireTimestamp(timestamp);
-    var mostSignificantBits = random.nextInt(max32bit);
-    final leastSignificantBits = random.nextInt(max32bit);
+    var mostSignificantBits = _random.nextInt(max32bit);
+    final leastSignificantBits = _random.nextInt(max32bit);
     mostSignificantBits = mostSignificantBits & mask16Bits; // random 16 bits
     mostSignificantBits = mostSignificantBits |
         (timestamp << 16); // timestamp (32+16) + 16 random
-    return ULID(mostSignificantBits, leastSignificantBits);
+    return ULID.internal(mostSignificantBits, leastSignificantBits);
   }
 
   /// Generate a [ULID] from given bytes.
@@ -49,7 +52,7 @@ class ULIDFactory {
       leastSignificantBits =
           (leastSignificantBits << 8) | (data[i] & mask8Bits);
     }
-    return ULID(mostSignificantBits, leastSignificantBits);
+    return ULID.internal(mostSignificantBits, leastSignificantBits);
   }
 
   /// Create [ULID] object from given (valid) ULID [string].
@@ -68,6 +71,6 @@ class ULIDFactory {
 
     final most = (time << 16) | (part1 >>> 24);
     final least = part2 | (part1 << 40);
-    return ULID(most, least);
+    return ULID.internal(most, least);
   }
 }

@@ -174,8 +174,8 @@ void testComparable(
   int leastSignificantBits2,
   int compare,
 ) {
-  final ulid1 = ULID(mostSignificantBits1, leastSignificantBits1);
-  final ulid2 = ULID(mostSignificantBits2, leastSignificantBits2);
+  final ulid1 = ULID.internal(mostSignificantBits1, leastSignificantBits1);
+  final ulid2 = ULID.internal(mostSignificantBits2, leastSignificantBits2);
   test('Compare $ulid1 and $ulid2', () {
     final equals12 = ulid1 == ulid2;
     final equals21 = ulid2 == ulid1;

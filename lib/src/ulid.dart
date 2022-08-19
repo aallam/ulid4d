@@ -7,11 +7,9 @@ import 'ulid_factory.dart';
 import 'utils.dart';
 
 /// Universally Unique Lexicographically Sortable Identifier.
-/// [Specification](https://github.com/ulid/spec#specification)
-class ULID extends Comparable<ULID> {
-  @internal
-  ULID(this.mostSignificantBits, this.leastSignificantBits);
-
+///
+/// [ULID Specification](https://github.com/ulid/spec#specification)
+class ULID implements Comparable<ULID> {
   /// Generate a [ULID].
   factory ULID.nextULID([int? timestamp]) => _factory.nextULID(timestamp);
 
@@ -25,7 +23,12 @@ class ULID extends Comparable<ULID> {
   /// Generate a ULID String.
   static String randomULID([int? timestamp]) => _factory.randomULID(timestamp);
 
+  /// Internal default ULID factory.
   static final _factory = ULIDFactory();
+
+  /// Internal [ULID] constructor.
+  @internal
+  const ULID.internal(this.mostSignificantBits, this.leastSignificantBits);
 
   /// The most significant 64 bits of this ULID.
   final int mostSignificantBits;
