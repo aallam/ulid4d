@@ -1,3 +1,7 @@
-## 1.0.0
+# 1.0.0
+> Published 19 Aug 2022
 
-- Initial version.
+### Added
+
+* ULID implementation
+* Binary implementation support
