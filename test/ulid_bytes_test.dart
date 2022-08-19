@@ -20,6 +20,18 @@ void main() {
     testFromBytes(
         patternBytes, patternMostSignificantBits, patternLeastSignificantBits);
   });
+
+  group('Invalid bytes', () {
+    test('Short byte array', () {
+      final short = Uint8List(15);
+      expect(() => ULID.fromBytes(short), throwsArgumentError);
+    });
+
+    test('Long byte array', () {
+      final long = Uint8List(17);
+      expect(() => ULID.fromBytes(long), throwsArgumentError);
+    });
+  });
 }
 
 /// Test convert [ULID] to byte array.
