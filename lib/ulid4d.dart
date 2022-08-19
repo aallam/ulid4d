@@ -9,6 +9,7 @@
 /// character)
 /// - Case-insensitive
 /// - No special characters (URL safe)
+/// - Monotonic sort order (correctly detects and handles the same millisecond)
 library ulid;
 
 export 'src/ulid.dart';
