@@ -97,7 +97,7 @@ Below is the current specification of ULID as implemented in this repository.
 
 ### Encoding
 
-[Crockford's Base32](http://www.crockford.com/wrmg/base32.html) is used as shown.
+[Crockford's Base32](https://www.crockford.com/wrmg/base32.html) is used as shown.
 This alphabet excludes the letters I, L, O, and U to avoid confusion and abuse.
 
 ```
