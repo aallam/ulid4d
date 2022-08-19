@@ -4,6 +4,7 @@ import 'package:meta/meta.dart';
 
 import 'crockford.dart';
 import 'ulid_factory.dart';
+import 'ulid_monotonic.dart';
 import 'utils.dart';
 
 /// Universally Unique Lexicographically Sortable Identifier.
@@ -20,11 +21,26 @@ class ULID implements Comparable<ULID> {
   /// Create [ULID] object from given (valid) ULID [string].
   factory ULID.fromString(String string) => _factory.fromString(string);
 
+  /// Generate the next monotonic [ULID].
+  /// If an overflow happened while incrementing the random part of the given
+  /// previous [ULID] value then the returned value will have a zero random
+  /// part.
+  factory ULID.nextMonotonicULID(ULID previous, [int? timestamp]) =>
+      _monotonic.nextULID(previous, timestamp);
+
+  /// Generate the next monotonic [ULID], or returns `null` if an overflow
+  /// happened while incrementing the random part of the given previous ULID.
+  static ULID? nextMonotonicULIDStrict(ULID previous, [int? timestamp]) =>
+      _monotonic.nextULIDStrict(previous, timestamp);
+
   /// Generate a ULID String.
   static String randomULID([int? timestamp]) => _factory.randomULID(timestamp);
 
   /// Internal default ULID factory.
   static final _factory = ULIDFactory();
+
+  /// Internal monotonic default ULID factory.
+  static final _monotonic = ULIDMonotonic(_factory);
 
   /// Internal [ULID] constructor.
   @internal
@@ -49,6 +65,18 @@ class ULID implements Comparable<ULID> {
       bytes[i] = (leastSignificantBits >> ((15 - i) * 8)) & mask8Bits;
     }
     return bytes;
+  }
+
+  /// Get next valid [ULID] value.
+  ULID increment() {
+    if (leastSignificantBits != 0xFFFFFFFFFFFFFFFF) {
+      return ULID.internal(mostSignificantBits, leastSignificantBits + 1);
+    }
+    if ((mostSignificantBits & mask16Bits) != mask16Bits) {
+      return ULID.internal(mostSignificantBits + 1, 0);
+    } else {
+      return ULID.internal(mostSignificantBits & timestampMsbMask, 0);
+    }
   }
 
   @override

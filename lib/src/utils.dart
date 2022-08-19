@@ -6,6 +6,7 @@ const mask5BitsCount = 5;
 const mask16Bits = 0xFFFF; // 16 bits mask
 const mask8Bits = 0xFF; // 8 bits mask
 const max32bit = 4294967295; // (2^32) - 1
+const timestampMsbMask = 0xFFFFFFFFFFFF0000;
 
 /// Require valid timestamp.
 void requireTimestamp(int timestamp) {
