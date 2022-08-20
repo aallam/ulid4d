@@ -79,7 +79,7 @@ var ulidStringFromULID = ulid.toString();
 
 ### Monotonicity
 
-[Specification](https://github.com/ulid/spec#monotonicity)
+* Generate monotonic `ULID`
 
 ```dart
 // generate ULID instance using a monotonic factory
@@ -90,7 +90,7 @@ var ulid = ULID.nextMonotonicULID(ulid);
 var ulidStrict = ULID.nextMonotonicULIDStrict(ulidMono);
 ```
 
-* Generate `ULID` using `ULIDMonocity`
+* Generate `ULID` using `ULIDMonocity` factory
 
 ```dart
 // generate ULID using ULID monotonic factory
