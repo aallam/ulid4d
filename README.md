@@ -1,12 +1,9 @@
-# ULID for Dart _(ulid4d)_
-
-> Universally Unique Lexicographically Sortable Identifier
+# ulid4d
 
 [![pub package](https://img.shields.io/pub/v/ulid4d.svg)](https://pub.dev/packages/ulid4d)
 [![codecov](https://codecov.io/gh/Aallam/ulid4d/branch/main/graph/badge.svg?token=VSK7FYJTAA)](https://codecov.io/gh/Aallam/ulid4d)
-[![License](https://img.shields.io/github/license/Aallam/ulid4d?color=lightgrey)](LICENSE)
 
-Dart implementation of [ULID](https://github.com/ulid/spec#specification) with binary implementation support.
+Universally Unique Lexicographically Sortable Identifier ([ULID](https://github.com/ulid/spec#specification)) implementation for Dart, with binary implementation and monotonicity support.
 
 ## Background
 
