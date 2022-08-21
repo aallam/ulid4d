@@ -10,7 +10,8 @@
 /// - Case-insensitive
 /// - No special characters (URL safe)
 /// - Monotonic sort order (correctly detects and handles the same millisecond)
-library ulid;
+library ulid4d;
 
 export 'src/ulid.dart';
 export 'src/ulid_factory.dart';
+export 'src/ulid_monotonic.dart';
