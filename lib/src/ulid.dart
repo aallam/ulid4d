@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:fixnum/fixnum.dart';
 import 'package:meta/meta.dart';
 
 import 'crockford.dart';
@@ -47,35 +48,37 @@ class ULID implements Comparable<ULID> {
   const ULID.internal(this.mostSignificantBits, this.leastSignificantBits);
 
   /// The most significant 64 bits of this ULID.
-  final int mostSignificantBits;
+  final Int64 mostSignificantBits;
 
   /// The least significant 64 bits of this ULID.
-  final int leastSignificantBits;
+  final Int64 leastSignificantBits;
 
   /// Get timestamp.
-  int get timestamp => mostSignificantBits >>> 16;
+  Int64 get timestamp => mostSignificantBits.shiftRightUnsigned(16);
 
   /// Generate the [Uint8List] for this [ULID].
   Uint8List toBytes() {
     final bytes = Uint8List(16);
     for (var i = 0; i < 8; i++) {
-      bytes[i] = (mostSignificantBits >> ((7 - i) * 8)) & mask8Bits;
+      final value = (mostSignificantBits >> ((7 - i) * 8)) & mask8Bits;
+      bytes[i] = value.toInt();
     }
     for (var i = 8; i < 16; i++) {
-      bytes[i] = (leastSignificantBits >> ((15 - i) * 8)) & mask8Bits;
+      final value = (leastSignificantBits >> ((15 - i) * 8)) & mask8Bits;
+      bytes[i] = value.toInt();
     }
     return bytes;
   }
 
   /// Get next valid [ULID] value.
   ULID increment() {
-    if (leastSignificantBits != 0xFFFFFFFFFFFFFFFF) {
+    if (leastSignificantBits != maxLSB) {
       return ULID.internal(mostSignificantBits, leastSignificantBits + 1);
     }
     if ((mostSignificantBits & mask16Bits) != mask16Bits) {
-      return ULID.internal(mostSignificantBits + 1, 0);
+      return ULID.internal(mostSignificantBits + 1, Int64.ZERO);
     } else {
-      return ULID.internal(mostSignificantBits & timestampMsbMask, 0);
+      return ULID.internal(mostSignificantBits & timestampMsbMask, Int64.ZERO);
     }
   }
 
@@ -92,13 +95,13 @@ class ULID implements Comparable<ULID> {
 
   @override
   String toString() {
-    final buffer = Uint8List(26)..write(timestamp, 10, 0);
+    final buffer = Uint8List(26)..writeInt64(timestamp, 10, 0);
     var value = (mostSignificantBits & mask16Bits) << 24;
-    final interim = leastSignificantBits >>> 40;
+    final interim = leastSignificantBits.shiftRightUnsigned(40);
     value = value | interim;
     buffer
-      ..write(value, 8, 10)
-      ..write(leastSignificantBits, 8, 18);
+      ..writeInt64(value, 8, 10)
+      ..writeInt64(leastSignificantBits, 8, 18);
     return String.fromCharCodes(buffer);
   }
 

@@ -1,9 +1,15 @@
 import 'dart:typed_data';
 
+import 'package:fixnum/fixnum.dart';
+
 import 'utils.dart';
 
 extension CrockfordByte on Uint8List {
   /// [Crockford's Base 32](https://www.crockford.com/base32.html).
+  void writeInt64(Int64 value, int count, int offset) {
+    write(value.toInt(), count, offset);
+  }
+
   void write(int value, int count, int offset) {
     for (var i = 0; i < count; i++) {
       final bitCount = (count - i - 1) * 5; // 5 bits, needed to encode 32 value

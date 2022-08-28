@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:fixnum/fixnum.dart';
+
 import 'crockford.dart';
 import 'ulid.dart';
 import 'utils.dart';
@@ -36,7 +38,10 @@ class ULIDFactory {
     mostSignificantBits = mostSignificantBits & mask16Bits; // random 16 bits
     mostSignificantBits = mostSignificantBits |
         (timestamp << 16); // timestamp (32+16) + 16 random
-    return ULID.internal(mostSignificantBits, leastSignificantBits);
+    return ULID.internal(
+      Int64(mostSignificantBits),
+      Int64(leastSignificantBits),
+    );
   }
 
   /// Generate a [ULID] from given bytes.
@@ -52,7 +57,10 @@ class ULIDFactory {
       leastSignificantBits =
           (leastSignificantBits << 8) | (data[i] & mask8Bits);
     }
-    return ULID.internal(mostSignificantBits, leastSignificantBits);
+    return ULID.internal(
+      Int64(mostSignificantBits),
+      Int64(leastSignificantBits),
+    );
   }
 
   /// Create [ULID] object from given (valid) ULID [string].
@@ -71,6 +79,6 @@ class ULIDFactory {
 
     final most = (time << 16) | (part1 >>> 24);
     final least = part2 | (part1 << 40);
-    return ULID.internal(most, least);
+    return ULID.internal(Int64(most), Int64(least));
   }
 }

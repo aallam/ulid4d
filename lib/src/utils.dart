@@ -1,4 +1,6 @@
 // maximum timestamp (32 high + 16 low bits)
+import 'package:fixnum/fixnum.dart';
+
 const timestampOverflowMask = 0xFFFF000000000000;
 
 const mask5Bits = 0x1F; // 32 encoding value (0..31)
@@ -7,6 +9,7 @@ const mask16Bits = 0xFFFF; // 16 bits mask
 const mask8Bits = 0xFF; // 8 bits mask
 const max32bit = 4294967295; // (2^32) - 1
 const timestampMsbMask = 0xFFFFFFFFFFFF0000;
+final maxLSB = Int64.parseHex('FFFFFFFFFFFFFFFF');
 
 /// Require valid timestamp.
 void requireTimestamp(int timestamp) {
@@ -24,4 +27,7 @@ void require(bool condition, [String? error]) {
 }
 
 /// Get current datetime in milliseconds.
-int currentTimestamp() => DateTime.now().millisecondsSinceEpoch;
+int currentTimestamp() =>
+    DateTime
+        .now()
+        .millisecondsSinceEpoch;

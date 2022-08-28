@@ -1,17 +1,19 @@
 import 'dart:math';
 import 'dart:typed_data';
 
-const pastTimestamp = 1481195424879;
+import 'package:fixnum/fixnum.dart';
+
+final pastTimestamp = Int64(1481195424879);
 const pastTimestampPart = '01B3F2133F';
-const maxTimestamp = 0xFFFFFFFFFFFF;
+final maxTimestamp = Int64.parseHex('FFFFFFFFFFFF');
 const maxTimestampPart = '7ZZZZZZZZZ';
-const minTimestamp = 0x0;
+const minTimestamp = Int64.ZERO;
 const minTimestampPart = '0000000000';
 const maxRandomPart = 'ZZZZZZZZZZZZZZZZ';
 const minRandomPart = '0000000000000000';
-const allBitsSet = 0xFFFFFFFFFFFFFFFF;
-const patternMostSignificantBits = 0x0011223344556677;
-const patternLeastSignificantBits = 0x8899AABBCCDDEEFF;
+final allBitsSet = Int64.parseHex('FFFFFFFFFFFFFFFF');
+final patternMostSignificantBits = Int64.parseHex('0011223344556677');
+final patternLeastSignificantBits = Int64.parseHex('8899AABBCCDDEEFF');
 final zeroBytes = Uint8List(16);
 final fullBytes = Uint8List.fromList(List.filled(16, 0xFF));
 // @formatter:off
@@ -66,4 +68,12 @@ class MockRandom implements Random {
 
   @override
   int nextInt(int max) => number.toInt();
+}
+
+extension IntExt on int {
+  Int64 toInt64() => Int64(this);
+}
+
+extension StringExt on String {
+  Int64 hexToInt64() => Int64.parseHex(this);
 }
