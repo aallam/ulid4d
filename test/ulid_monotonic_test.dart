@@ -8,11 +8,12 @@ import 'utils.dart';
 void main() {
   group('Generate next monotonic ULID', () {
     testNextMonotonic(
-        const ULID.internal(Int64.ZERO, Int64.ZERO),
-        const ULID.internal(
-          Int64.ZERO,
-          Int64.ONE,
-        ));
+      const ULID.internal(Int64.ZERO, Int64.ZERO),
+      const ULID.internal(
+        Int64.ZERO,
+        Int64.ONE,
+      ),
+    );
     testNextMonotonic(
       ULID.internal(Int64.ZERO, Int64.parseHex('FFFFFFFFFFFFFFFE')),
       ULID.internal(Int64.ZERO, Int64.parseHex('FFFFFFFFFFFFFFFF')),

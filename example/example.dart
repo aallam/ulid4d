@@ -1,4 +1,3 @@
-import 'package:fixnum/fixnum.dart';
 import 'package:ulid4d/ulid4d.dart';
 
 void main() {

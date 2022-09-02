@@ -34,7 +34,21 @@ jobs:
         run: dart analyze --fatal-infos
         if: always() && steps.install.outcome == 'success'
 
-  test:
+  test-native:
+    needs: analyze
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: dart-lang/setup-dart@v1.0
+        with:
+          sdk: stable
+      - id: install
+        name: Install dependencies
+        run: dart pub get
+      - name: Run tests
+        run: dart test
+
+  test-js:
     needs: analyze
     runs-on: ubuntu-latest
     steps:
@@ -49,7 +63,7 @@ jobs:
         run: dart test
 
   coverage:
-    needs:   test
+    needs: [ test-native, test-js ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
