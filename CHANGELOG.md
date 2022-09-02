@@ -1,3 +1,16 @@
+# 2.0.0
+
+### Fix
+
+* Compatibility with js platform.
+
+### Breaking
+
+* `ULID`'s fields type change from `int` to `Int64`
+    * `mostSignificantBits`
+    * `leastSignificantBits`
+    * `timestamp`
+
 # 1.1.1
 
 ### Fix
