@@ -38,7 +38,7 @@ class ULIDFactory {
     mostSignificantBits = mostSignificantBits & mask16Bits; // random 16 bits
     mostSignificantBits =
         mostSignificantBits | (time << 16); // timestamp (32+16) + 16 random
-    return ULID.internal(mostSignificantBits, leastSignificantBits);
+    return DefaultULID(mostSignificantBits, leastSignificantBits);
   }
 
   /// Generate a [ULID] from given bytes.
@@ -54,7 +54,7 @@ class ULIDFactory {
       leastSignificantBits =
           (leastSignificantBits << 8) | (data[i] & mask8Bits);
     }
-    return ULID.internal(mostSignificantBits, leastSignificantBits);
+    return DefaultULID(mostSignificantBits, leastSignificantBits);
   }
 
   /// Create [ULID] object from given (valid) ULID [string].
@@ -73,6 +73,6 @@ class ULIDFactory {
 
     final most = (time << 16) | part1.shiftRightUnsigned(24);
     final least = part2 | (part1 << 40);
-    return ULID.internal(most, least);
+    return DefaultULID(most, least);
   }
 }
