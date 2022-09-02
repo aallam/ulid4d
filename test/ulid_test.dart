@@ -181,8 +181,8 @@ void testComparable(
   Int64 leastSignificantBits2,
   Int64 compare,
 ) {
-  final ulid1 = ULID.internal(mostSignificantBits1, leastSignificantBits1);
-  final ulid2 = ULID.internal(mostSignificantBits2, leastSignificantBits2);
+  final ulid1 = DefaultULID(mostSignificantBits1, leastSignificantBits1);
+  final ulid2 = DefaultULID(mostSignificantBits2, leastSignificantBits2);
   test('Compare $ulid1 and $ulid2', () {
     final equals12 = ulid1 == ulid2;
     final equals21 = ulid2 == ulid1;

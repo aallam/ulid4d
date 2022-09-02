@@ -8,28 +8,28 @@ import 'utils.dart';
 void main() {
   group('Generate next monotonic ULID', () {
     testNextMonotonic(
-      const ULID.internal(Int64.ZERO, Int64.ZERO),
-      const ULID.internal(
+      const DefaultULID(Int64.ZERO, Int64.ZERO),
+      const DefaultULID(
         Int64.ZERO,
         Int64.ONE,
       ),
     );
     testNextMonotonic(
-      ULID.internal(Int64.ZERO, Int64.parseHex('FFFFFFFFFFFFFFFE')),
-      ULID.internal(Int64.ZERO, Int64.parseHex('FFFFFFFFFFFFFFFF')),
+      DefaultULID(Int64.ZERO, Int64.parseHex('FFFFFFFFFFFFFFFE')),
+      DefaultULID(Int64.ZERO, Int64.parseHex('FFFFFFFFFFFFFFFF')),
     );
     testNextMonotonic(
-      ULID.internal(Int64.ZERO, Int64.parseHex('FFFFFFFFFFFFFFFF')),
-      const ULID.internal(Int64.ONE, Int64.ZERO),
+      DefaultULID(Int64.ZERO, Int64.parseHex('FFFFFFFFFFFFFFFF')),
+      const DefaultULID(Int64.ONE, Int64.ZERO),
     );
     testNextMonotonic(
-      ULID.internal(Int64.parseHex('FFFF'), Int64.parseHex('FFFFFFFFFFFFFFFF')),
-      const ULID.internal(Int64.ZERO, Int64.ZERO),
+      DefaultULID(Int64.parseHex('FFFF'), Int64.parseHex('FFFFFFFFFFFFFFFF')),
+      const DefaultULID(Int64.ZERO, Int64.ZERO),
     );
   });
 
   test('Generate next monotonic ULID with timestamp mismatch', () {
-    const previousValue = ULID.internal(Int64.ZERO, Int64.ZERO);
+    const previousValue = DefaultULID(Int64.ZERO, Int64.ZERO);
     final nextULID1 = ULID.nextMonotonicULID(previousValue, 1);
     expect(nextULID1.timestamp, Int64.ONE);
 
@@ -39,25 +39,25 @@ void main() {
 
   group('Generate next monotonic ULID strict.', () {
     testNextMonotonicStrict(
-      const ULID.internal(Int64.ZERO, Int64.ZERO),
-      const ULID.internal(Int64.ZERO, Int64.ONE),
+      const DefaultULID(Int64.ZERO, Int64.ZERO),
+      const DefaultULID(Int64.ZERO, Int64.ONE),
     );
     testNextMonotonicStrict(
-      ULID.internal(Int64.ZERO, Int64.parseHex('FFFFFFFFFFFFFFFE')),
-      ULID.internal(Int64.ZERO, Int64.parseHex('FFFFFFFFFFFFFFFF')),
+      DefaultULID(Int64.ZERO, Int64.parseHex('FFFFFFFFFFFFFFFE')),
+      DefaultULID(Int64.ZERO, Int64.parseHex('FFFFFFFFFFFFFFFF')),
     );
     testNextMonotonicStrict(
-      ULID.internal(Int64.ZERO, Int64.parseHex('FFFFFFFFFFFFFFFF')),
-      const ULID.internal(Int64.ONE, Int64.ZERO),
+      DefaultULID(Int64.ZERO, Int64.parseHex('FFFFFFFFFFFFFFFF')),
+      const DefaultULID(Int64.ONE, Int64.ZERO),
     );
     testNextMonotonicStrict(
-      ULID.internal(Int64.parseHex('FFFF'), Int64.parseHex('FFFFFFFFFFFFFFFF')),
+      DefaultULID(Int64.parseHex('FFFF'), Int64.parseHex('FFFFFFFFFFFFFFFF')),
       null,
     );
   });
 
   test('Generate next strict monotonic ULID with timestamp mismatch', () {
-    const previousValue = ULID.internal(Int64.ZERO, Int64.ZERO);
+    const previousValue = DefaultULID(Int64.ZERO, Int64.ZERO);
     final nextULID1 = ULID.nextMonotonicULIDStrict(previousValue, 1);
     expect(nextULID1!.timestamp, Int64.ONE);
 
@@ -67,7 +67,7 @@ void main() {
 
   test('Generate nextULID with monotonic factory', () {
     final monotonic = ULIDMonotonic();
-    const previousValue = ULID.internal(Int64.ZERO, Int64.ZERO);
+    const previousValue = DefaultULID(Int64.ZERO, Int64.ZERO);
     final result = monotonic.nextULID(previousValue).toString();
 
     expect(result.length, 26);

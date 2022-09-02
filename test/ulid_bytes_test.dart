@@ -47,7 +47,7 @@ void testToBytes(
   Int64 leastSignificantBits,
   Uint8List expectedData,
 ) {
-  final ulid = ULID.internal(mostSignificantBits, leastSignificantBits);
+  final ulid = DefaultULID(mostSignificantBits, leastSignificantBits);
   test('$ulid to bytes', () {
     final bytes = ulid.toBytes();
     final equal = const ListEquality().equals(bytes, expectedData);
