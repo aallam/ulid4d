@@ -1,4 +1,4 @@
-# ulid4d
+# ULID for Dart
 
 [![pub package](https://img.shields.io/pub/v/ulid4d.svg)](https://pub.dev/packages/ulid4d)
 [![codecov](https://codecov.io/gh/Aallam/ulid4d/branch/main/graph/badge.svg?token=VSK7FYJTAA)](https://codecov.io/gh/Aallam/ulid4d)
