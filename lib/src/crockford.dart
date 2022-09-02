@@ -5,31 +5,26 @@ import 'package:fixnum/fixnum.dart';
 import 'utils.dart';
 
 extension CrockfordByte on Uint8List {
-  /// [Crockford's Base 32](https://www.crockford.com/base32.html).
-  void writeInt64(Int64 value, int count, int offset) {
-    write(value.toInt(), count, offset);
-  }
-
-  void write(int value, int count, int offset) {
+  void write(Int64 value, int count, int offset) {
     for (var i = 0; i < count; i++) {
       final bitCount = (count - i - 1) * 5; // 5 bits, needed to encode 32 value
-      final shifted = value >>> bitCount;
+      final shifted = value.shiftRightUnsigned(bitCount);
       final index = shifted & mask5Bits;
-      this[offset + i] = encodingChars[index];
+      this[offset + i] = encodingChars[index.toInt()];
     }
   }
 }
 
 extension CrockfordString on String {
   /// [Crockford's Base 32](https://www.crockford.com/base32.html).
-  int parseCrockford() {
+  Int64 parseCrockford() {
     require(length <= 12, 'input length must not exceed 12 but was $length!');
-    var result = 0;
+    var result = Int64.ZERO;
     for (var i = 0; i < codeUnits.length; i++) {
       final current = codeUnits[i];
-      var value = -1;
+      var value = -1.toInt64();
       if (current < decodingChars.length) {
-        value = decodingChars[current];
+        value = decodingChars[current].toInt64();
       }
       require(
         value >= 0,

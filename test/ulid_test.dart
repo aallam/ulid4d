@@ -9,7 +9,7 @@ import 'utils.dart';
 void main() {
   test('invalid timestamp', () {
     expect(
-      () => requireTimestamp(0x0001000000000000),
+      () => requireTimestamp(Int64(0x0001000000000000)),
       throwsArgumentError,
     );
   });

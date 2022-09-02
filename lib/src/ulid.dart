@@ -95,13 +95,13 @@ class ULID implements Comparable<ULID> {
 
   @override
   String toString() {
-    final buffer = Uint8List(26)..writeInt64(timestamp, 10, 0);
+    final buffer = Uint8List(26)..write(timestamp, 10, 0);
     var value = (mostSignificantBits & mask16Bits) << 24;
     final interim = leastSignificantBits.shiftRightUnsigned(40);
     value = value | interim;
     buffer
-      ..writeInt64(value, 8, 10)
-      ..writeInt64(leastSignificantBits, 8, 18);
+      ..write(value, 8, 10)
+      ..write(leastSignificantBits, 8, 18);
     return String.fromCharCodes(buffer);
   }
 
