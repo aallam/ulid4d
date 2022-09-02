@@ -28,7 +28,7 @@ abstract class ULIDFactory {
 
 /// Default implementation of [ULIDFactory].
 class _ULIDFactory implements ULIDFactory {
-  /// Creates [_ULIDFactory] instance.
+  /// Creates ULID factory instance.
   const _ULIDFactory(this.random);
 
   /// Internal random generator.
