@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:collection/collection.dart';
+import 'package:fixnum/fixnum.dart';
 import 'package:test/test.dart';
 import 'package:ulid4d/src/ulid.dart';
 
@@ -8,7 +9,7 @@ import 'utils.dart';
 
 void main() {
   group('ULID to byte array', () {
-    testToBytes(0, 0, zeroBytes);
+    testToBytes(Int64.ZERO, Int64.ZERO, zeroBytes);
     testToBytes(allBitsSet, allBitsSet, fullBytes);
     testToBytes(
       patternMostSignificantBits,
@@ -18,7 +19,7 @@ void main() {
   });
 
   group('ULID from byte array', () {
-    testFromBytes(zeroBytes, 0, 0);
+    testFromBytes(zeroBytes, Int64.ZERO, Int64.ZERO);
     testFromBytes(fullBytes, allBitsSet, allBitsSet);
     testFromBytes(
       patternBytes,
@@ -42,8 +43,8 @@ void main() {
 
 /// Test convert [ULID] to byte array.
 void testToBytes(
-  int mostSignificantBits,
-  int leastSignificantBits,
+  Int64 mostSignificantBits,
+  Int64 leastSignificantBits,
   Uint8List expectedData,
 ) {
   final ulid = ULID.internal(mostSignificantBits, leastSignificantBits);
@@ -57,8 +58,8 @@ void testToBytes(
 /// Test convert byte array to [ULID].
 void testFromBytes(
   Uint8List data,
-  int mostSignificantBits,
-  int leastSignificantBits,
+  Int64 mostSignificantBits,
+  Int64 leastSignificantBits,
 ) {
   final ulid = ULID.fromBytes(data);
   test('$ulid from byte array', () {

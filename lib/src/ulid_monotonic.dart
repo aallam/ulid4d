@@ -21,11 +21,11 @@ class ULIDMonotonic {
   /// previous [ULID] value then the returned value will have a zero random
   /// part.
   ULID nextULID(ULID previous, [int? timestamp]) {
-    timestamp = timestamp ?? currentTimestamp();
-    if (previous.timestamp == timestamp) {
+    final time = timestampOrCurrent(timestamp);
+    if (previous.timestamp == time) {
       return previous.increment();
     } else {
-      return _factory.nextULID(timestamp);
+      return _factory.nextULID(time.toInt());
     }
   }
 

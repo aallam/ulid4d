@@ -1,3 +1,4 @@
+import 'package:fixnum/fixnum.dart';
 import 'package:test/test.dart';
 import 'package:ulid4d/src/ulid.dart';
 import 'package:ulid4d/src/ulid_factory.dart';
@@ -8,7 +9,7 @@ import 'utils.dart';
 void main() {
   test('invalid timestamp', () {
     expect(
-      () => requireTimestamp(0x0001000000000000),
+      () => requireTimestamp(Int64(0x0001000000000000)),
       throwsArgumentError,
     );
   });
@@ -100,17 +101,23 @@ void main() {
   });
 
   group('Comparable ULID', () {
-    testComparable(0, 0, 0, 0, 0);
-    testComparable(allBitsSet, allBitsSet, allBitsSet, allBitsSet, 0);
+    testComparable(Int64.ZERO, Int64.ZERO, Int64.ZERO, Int64.ZERO, Int64.ZERO);
+    testComparable(allBitsSet, allBitsSet, allBitsSet, allBitsSet, Int64.ZERO);
     testComparable(
       patternMostSignificantBits,
       patternLeastSignificantBits,
       patternMostSignificantBits,
       patternLeastSignificantBits,
-      0,
+      Int64.ZERO,
     );
-    testComparable(0, 1, 0, 0, 1);
-    testComparable(1 << 16, 0, 0, 0, 1);
+    testComparable(Int64.ZERO, Int64.ONE, Int64.ZERO, Int64.ZERO, Int64.ONE);
+    testComparable(
+      Int64.ONE << 16,
+      Int64.ZERO,
+      Int64.ZERO,
+      Int64.ZERO,
+      Int64.ONE,
+    );
   });
 
   group('Parse valid ULID ', () {
@@ -168,11 +175,11 @@ void main() {
 
 /// Test comparability of [ULID] objects.
 void testComparable(
-  int mostSignificantBits1,
-  int leastSignificantBits1,
-  int mostSignificantBits2,
-  int leastSignificantBits2,
-  int compare,
+  Int64 mostSignificantBits1,
+  Int64 leastSignificantBits1,
+  Int64 mostSignificantBits2,
+  Int64 leastSignificantBits2,
+  Int64 compare,
 ) {
   final ulid1 = ULID.internal(mostSignificantBits1, leastSignificantBits1);
   final ulid2 = ULID.internal(mostSignificantBits2, leastSignificantBits2);
@@ -197,7 +204,7 @@ void testComparable(
 }
 
 /// Test parse valid ULID string.
-void testParseValidULID(String string, int expectedTimestamp) {
+void testParseValidULID(String string, Int64 expectedTimestamp) {
   test('Parse $string', () {
     final ulid = ULID.fromString(string);
     expect(ulid.toString(), string);
@@ -209,7 +216,7 @@ void testParseValidULID(String string, int expectedTimestamp) {
 void testParseExcludedULID(
   String string,
   String expectedString,
-  int expectedTimestamp,
+  Int64 expectedTimestamp,
 ) {
   test('Parse $string', () {
     final ulid = ULID.fromString(string);
