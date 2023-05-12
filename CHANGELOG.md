@@ -1,3 +1,11 @@
+# 3.0.0-beta
+
+### Changed
+- Update to Dart 3
+
+### Breaking Changes
+- `ULID`, `ULIDFactory` and `ULIDMonotonic` can only be implemented.
+
 # 2.0.0
 
 ### Fix
