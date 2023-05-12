@@ -5,7 +5,7 @@ import 'utils.dart';
 /// Monotonic [ULID] factory.
 ///
 /// [Specification](https://github.com/ulid/spec#monotonicity)
-abstract class ULIDMonotonic {
+abstract interface class ULIDMonotonic {
   /// Creates a [ULIDMonotonic] instance, with optional [factory].
   factory ULIDMonotonic([ULIDFactory? factory]) =>
       _ULIDMonotonic(factory ?? ULIDFactory());
@@ -22,7 +22,7 @@ abstract class ULIDMonotonic {
 }
 
 /// Default implementation of [ULIDMonotonic].
-class _ULIDMonotonic implements ULIDMonotonic {
+final class _ULIDMonotonic implements ULIDMonotonic {
   /// Creates ULID factory with monotonic capabilities.
   const _ULIDMonotonic(this.factory);
 

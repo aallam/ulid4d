@@ -4,6 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:test/test.dart';
 import 'package:ulid4d/src/ulid.dart';
+import 'package:ulid4d/src/ulid_default.dart';
 
 import 'utils.dart';
 
