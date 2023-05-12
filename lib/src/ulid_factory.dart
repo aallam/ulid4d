@@ -5,10 +5,11 @@ import 'package:fixnum/fixnum.dart';
 
 import 'crockford.dart';
 import 'ulid.dart';
+import 'ulid_default.dart';
 import 'utils.dart';
 
 /// [ULID] factory builder.
-abstract class ULIDFactory {
+abstract interface class ULIDFactory {
   /// Creates a [ULIDFactory] instance, with optional [random] generator.
   factory ULIDFactory([Random? random]) => _ULIDFactory(random ?? Random());
 
@@ -27,7 +28,7 @@ abstract class ULIDFactory {
 }
 
 /// Default implementation of [ULIDFactory].
-class _ULIDFactory implements ULIDFactory {
+final class _ULIDFactory implements ULIDFactory {
   /// Creates ULID factory instance.
   const _ULIDFactory(this.random);
 
